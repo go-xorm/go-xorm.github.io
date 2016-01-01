@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>XORM - 官方博客</title><link>http://localhost</link><description>Xorm 是一个简单而强大的Go语言ORM框架</description><lastBuildDate>Fri, 01 Jan 2016 22:59:38 +0800</lastBuildDate><item><title>在Xorm中使用Join和Extends标记</title><link>http://localhost/2015/12/1/1-xorm-join-extends-usage.html</link><pubDate>Tue, 01 Dec 2015 16:00:00 +0000</pubDate><category>go</category><category>golang</category><category>xorm</category><category>orm</category><category>sql</category><category>database</category><description><![CDATA[ <p>本文主要针对对Xorm已经有了一定了解的读者，如果您是第一次了解Xorm，请先阅读<a href="http://xorm.io/docs">xorm操作手册</a>。</p>
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>XORM - 官方博客</title><link>http://localhost</link><description>Xorm 是一个简单而强大的Go语言ORM框架</description><lastBuildDate>Fri, 01 Jan 2016 23:20:42 +0800</lastBuildDate><item><title>在Xorm中使用Join和Extends标记</title><link>http://localhost/2015/12/1/1-xorm-join-extends-usage.html</link><pubDate>Tue, 01 Dec 2015 16:00:00 +0000</pubDate><category>go</category><category>golang</category><category>xorm</category><category>orm</category><category>sql</category><category>database</category><description><![CDATA[ <p>本文主要针对对Xorm已经有了一定了解的读者，如果您是第一次了解Xorm，请先阅读<a href="http://xorm.io/docs">xorm操作手册</a>。</p>
 
 <p>Xorm的基本操作都是比较简单的，可能大家也都比较熟悉了。今天主要讲解extends标记和join的使用。通过使用join和extends，可以解决许多需要级联进行的操作。</p>
 
@@ -65,7 +65,7 @@ engine.Sql(&quot;select account.*, user.name, (select count(id) from car where c
 </code></pre>
 
 <p>在这样的复杂需求下，我们使用了Sql函数和extends标记结合来完成这个操作。</p>
- ]]></description></item><item><title>Xorm博客定型</title><link>http://localhost/2015/10/1/welcome.html</link><pubDate>Thu, 01 Oct 2015 16:00:00 +0000</pubDate><category>go</category><category>golang</category><category>xorm</category><category>orm</category><category>sql</category><category>database</category><description><![CDATA[ <p>终于迎来了个人认为最有发展潜力的静态站点生成工具 <a href="github.com/go-xiaohei/pugo">Pugo</a>发布了第一个稳定版本，本博客将使用其搭建，将会发布关于xorm的高质量文章和新版本等信息.</p>
+ ]]></description></item><item><title>Xorm博客定型</title><link>http://localhost/2015/10/1/welcome.html</link><pubDate>Thu, 01 Oct 2015 16:00:00 +0000</pubDate><category>go</category><category>golang</category><category>xorm</category><category>orm</category><category>sql</category><category>database</category><description><![CDATA[ <p>终于迎来了个人认为最有发展潜力的静态站点生成工具 <a href="https://github.com/go-xiaohei/pugo">Pugo</a>发布了第一个稳定版本，本博客将使用其搭建，将会发布关于xorm的高质量文章和新版本等信息.</p>
  ]]></description></item><item><title>XORM的七种武器</title><link>http://localhost/2014/1/1/1-7-weapons.html</link><pubDate>Wed, 01 Jan 2014 16:00:00 +0000</pubDate><category>go</category><category>golang</category><category>xorm</category><category>orm</category><category>sql</category><category>database</category><description><![CDATA[ <p><a href="https://github.com/lunny/xorm">xorm</a> 是一个简单而强大的 Go 语言开源 ORM 库. 通过它可以使数据库操作非常简便。</p>
 
 <h1>xorm 的七种武器</h1>

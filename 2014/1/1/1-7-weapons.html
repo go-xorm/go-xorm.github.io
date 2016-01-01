@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>XORM的七种武器 - XORM</title>
+    <meta name="keywords" content="golang,orm,xorm"/>
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="/static/css/prism.css"/>
+    <script src="/static/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">var postType = "post";</script>
+</head>
+<body>
+<aside class="cover post" style="background: url('/static/media/cover.jpg') center/cover no-repeat fixed">
+    <div class="profile">
+        <a id="avatar-link" title="link to homepage" href="/">
+            <img src="/static/media/author.png" alt="pugo-robot" class="avatar">
+            <h1 id="profile-title">XORM</h1>
+        </a>
+        <hr class="divider long">
+        <p class="bio">
+            官方博客<br/>Xorm 是一个简单而强大的Go语言ORM框架
+        </p>
+        <hr class="divider short">
+        <div class="navigation">
+            <ul class="nav">
+                <li role="presentation" class="">
+                    <a href="/">文章
+                    </a>
+                </li>
+                <li role="presentation" class="">
+                    <a href="/archive.html">归档
+                    </a>
+                </li>
+                <li role="presentation" class="">
+                    <a href="/about.html">关于
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <ul class="social">
+            <li><a href="/feed.xml">
+                <i class="fa fa-rss"></i>
+            </a></li>
+        </ul>
+    </div>
+</aside>
+<section id="main">
+    <div class="container">
+        <div id="article-single">
+            <article class="article">
+                <div class="row">
+                    <header class="header">
+                        <h3 class="title">
+                            <a href="/2014/1/1/1-7-weapons.html">XORM的七种武器</a>
+                        </h3>
+                    </header>
+                    <aside class="aside clearfix">
+                        <span class="date">
+                            <span class="year">2014</span>/
+                            <span class="month">1</span>/
+                            <span class="day">1</span>
+                        </span>
+                        <a class="author"></a>
+                        <span class="tags">
+                            <a class="tag" href="/tags/go.html">go</a>
+                            <a class="tag" href="/tags/golang.html">golang</a>
+                            <a class="tag" href="/tags/xorm.html">xorm</a>
+                            <a class="tag" href="/tags/orm.html">orm</a>
+                            <a class="tag" href="/tags/sql.html">sql</a>
+                            <a class="tag" href="/tags/database.html">database</a>
+                        </span>
+                    </aside>
+                    <section class="brief"><p><a href="https://github.com/lunny/xorm">xorm</a> 是一个简单而强大的 Go 语言开源 ORM 库. 通过它可以使数据库操作非常简便。</p>
+
+<h1>xorm 的七种武器</h1>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 是一个简单而强大的 Go 语言开源 ORM 库. 通过它可以使数据库操作非常简便。</p>
+
+<p>了解过 Go 的人可能会有疑问，Go 已经提供了 database/sql 接口，操作各种数据库接口都一致了，还有必要再使用 ORM 吗？也有人觉得对于复杂 SQL 语句，ORM 是无法应付的。</p>
+
+<p>是的，<a href="https://github.com/lunny/xorm">xorm</a> 不是为了取代 SQL，它甚至可以和 SQL 混用，它是在 databse/sql 接口的基础之上提供了更多的特性。我们将这些功能和特性比喻成七种武器，来帮助开发者快速的完成数据库的操作。</p>
+
+<!--more-->
+
+<h2>安装</h2>
+
+<p>当然，第一步，我们必须要安装 <a href="https://github.com/lunny/xorm">xorm</a>：</p>
+
+<p>如果你有安装 gopm，强烈建议使用 <a href="https://github.com/gpmgo/gopm">gopm</a> 来进行 go 的包管理：</p>
+<pre><code>gopm get github.com/lunny/xorm
+</code></pre>
+
+<p>如果没有安装 gopm，当然也可以直接用 go 工具进行安装：</p>
+<pre><code>go get github.com/lunny/xorm
+</code></pre>
+
+<h2>数据库及驱动支持</h2>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 当前支持如下 5 种数据库驱动和 4 种数据库。</p>
+
+<ul>
+<li><p>Mysql: <a href="https://github.com/go-sql-driver/mysql">github.com/go-sql-driver/mysql</a></p></li>
+
+<li><p>MyMysql: <a href="https://github.com/ziutek/mymysql/godrv">github.com/ziutek/mymysql/godrv</a></p></li>
+
+<li><p>SQLite: <a href="https://github.com/mattn/go-sqlite3">github.com/mattn/go-sqlite3</a></p></li>
+
+<li><p>Postgres: <a href="https://github.com/lib/pq">github.com/lib/pq</a></p></li>
+
+<li><p>MsSql: <a href="https://github.com/lunny/godbc">github.com/lunny/godbc</a></p></li>
+</ul>
+
+<h2>第一种武器：结构体和数据库表的映射</h2>
+
+<p>在 <a href="https://github.com/lunny/xorm">xorm</a> 中，我们用一个结构体和数据库中的表进行对应，结构体中的 field 和数据库中的 column 进行对应，通过在 field 后面的 tag 来进行一些特殊的设置，例如：unique，表示唯一索引；pk 表示主键；version 表示乐观锁字段，等等。写过 sql 语句的同学可能会觉得这些标记很熟悉，是的，大部分和 sql 语句里面的 column 定义类似。</p>
+<pre><code>type User struct {
+    Id int64
+    Name string `xorm:&quot;unique not null&quot;`
+    Age int
+    Avatar []byte
+    Created time.Time `xorm:&quot;created&quot;`
+    Updated time.Time `xorm:&quot;updated&quot;`
+    Version int `xorm:&quot;version&quot;`
+}
+</code></pre>
+
+<p>对应的过程必然涉及到命名的映射。默认的 <a href="https://github.com/lunny/xorm">xorm</a> 提供了 SnakeMapper，SameMapper, PrefixMapper,
+SuffixMapper 几种命名方式和方案，基本可以满足各种需要。</p>
+
+<h2>第二种武器：连写神技</h2>
+
+<p>使用可以连写的 API 对于一个拥有语法提示的编辑器简直就是效率利器，那么我们还有什么理由不支持呢。看看我们这个能写多长：</p>
+<pre><code>engine.Where(&quot;id=?&quot;, 1).And(&quot;name = ?&quot;, &quot;xlw&quot;).Or(&quot;age &gt; ?&quot;, 20).Asc(&quot;name&quot;).Desc(&quot;id&quot;).Find(&amp;users)
+</code></pre>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 主要的操作实际上是两个 RAW 函数和七个 ORM 函数：</p>
+
+<h3>RAW 函数</h3>
+
+<ul>
+<li><p>Query：执行 SQL 查询语句</p>
+<pre><code>results, err := engine.Query(&quot;select * from user&quot;)
+</code></pre></li>
+
+<li><p>Exec：执行 SQL 执行语句</p>
+<pre><code>affected, err := engine.Exec(&quot;update user set .... where ...&quot;)
+</code></pre></li>
+</ul>
+
+<h3>ORM 函数</h3>
+
+<ul>
+<li><p>Insert：插入一条或多条数据</p>
+<pre><code>affected, err := engine.Insert(&amp;struct)
+// INSERT INTO struct () values ()
+affected, err := engine.Insert(&amp;struct1, &amp;struct2)
+// INSERT INTO struct1 () values ()
+// INSERT INTO struct2 () values ()
+affected, err := engine.Insert(&amp;sliceOfStruct)
+// INSERT INTO struct () values (),(),()
+affected, err := engine.Insert(&amp;struct1, &amp;sliceOfStruct2)
+// INSERT INTO struct1 () values ()
+// INSERT INTO struct2 () values (),(),()
+</code></pre></li>
+
+<li><p>Get：获取单条数据</p>
+<pre><code>has, err := engine.Get(&amp;user)
+// SELECT * FROM user LIMIT 1
+</code></pre></li>
+
+<li><p>Find：获取多条数据</p>
+<pre><code>err := engine.Find(&amp;users)
+// SELECT * FROM user
+</code></pre></li>
+
+<li><p>Iterate &amp; Rows：获取多条数据并逐条处理</p>
+<pre><code>err := engine.Iterate(...， func(...) {
+    // ...
+})
+// SELECT * FROM user
+
+
+rows, err := engine.Rows(...)
+// SELECT * FROM user
+for rows.Next() {
+    rows.Scan(&amp;user)
+}
+</code></pre></li>
+
+<li><p>Update：更新一条或多条记录</p>
+<pre><code>affected, err := engine.Update(&amp;user)
+// UPDATE user SET
+</code></pre></li>
+
+<li><p>Delete：删除数据</p>
+<pre><code>affected, err := engine.Delete(&amp;user)
+// DELETE FROM user Where ...
+</code></pre></li>
+
+<li><p>Count：根据查询条件计算数量</p>
+<pre><code>counts, err := engine.Count(&amp;user)
+// SELECT count(*) AS total FROM user
+</code></pre></li>
+</ul>
+
+<p>这些函数放到连写的最后，前面可以采用各种条件的连写。</p>
+
+<h2>第三种武器：表结构同步</h2>
+
+<p>随着需求的改变，有的时候，我们不得不去修改原有的数据结构，那么此时，我们可能就要去修改数据库的表结构或者索引之类。这是一个繁琐的工作，而且很可能会漏掉之类。通过 <a href="https://github.com/lunny/xorm">xorm</a> 的 <code>Sync</code> 函数，这个工作将变得简单得多。</p>
+<pre><code>err := engine.Sync(new(User))
+</code></pre>
+
+<p>只需要在程序启动时，执行 <code>Sync</code>，并将需要同步的一个或者多个表对应的 Struct 作为参数传入，那么 engine 将自动的检测并新增表，新增字段，新增索引。</p>
+
+<p>是不是很简单，很强大。当然，其实也可以做到自动删除列，但是这样的话，很有可能会引起数据丢失，因此当前只提供了自动新增的功能。这个功能后面还会继续增强。</p>
+
+<h2>第四种武器：混合事务</h2>
+
+<p>当使用事务处理时，需要创建 Session 对象。在进行事物处理时，可以混用 ORM 方法和 RAW 方法，如下代码所示：</p>
+<pre><code>session := engine.NewSession()
+defer session.Close()
+
+// add Begin() before any action
+err := session.Begin()
+user1 := Userinfo{Username: &quot;xiaoxiao&quot;, Departname: &quot;dev&quot;, Alias: &quot;lunny&quot;}
+_, err = session.Insert(&amp;user1)
+if err != nil {
+    session.Rollback()
+    return
+}
+
+_, err = session.Where(&quot;id = ?&quot;, 2).Update(&amp;Userinfo{Username: &quot;yyy&quot;})
+if err != nil {
+    session.Rollback()
+    return
+}
+
+_, err = session.Exec(&quot;delete from userinfo where username = ?&quot;, user2.Username)
+if err != nil {
+    session.Rollback()
+    return
+}
+
+// add Commit() after all actions
+err = session.Commit()
+if err != nil {
+    return
+}
+</code></pre>
+
+<h2>第五种武器：数据库缓存</h2>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 内置了一致性缓存支持，根据测算，开启缓存后，查询性能提高了 3-5 倍。不过缓存默认并没有开启。要开启缓存，需要在engine创建完后进行配置，如：</p>
+
+<p>启用一个全局的内存缓存</p>
+<pre><code>cacher := xorm.NewLRUCacher(xorm.NewMemoryStore(), 1000)
+engine.SetDefaultCacher(cacher)
+</code></pre>
+
+<p>上述代码采用了 LRU 算法的一个缓存，缓存方式是存放到内存中，缓存 struct 的记录数为 1000 条，缓存针对的范围是所有具有主键的表，没有主键的表中的数据将不会被缓存。
+如果只想针对部分表，则：</p>
+<pre><code>cacher := xorm.NewLRUCacher(xorm.NewMemoryStore(), 1000)
+engine.MapCacher(&amp;user, cacher)
+</code></pre>
+
+<p>如果要禁用某个表的缓存，则：</p>
+<pre><code>engine.MapCacher(&amp;user, nil)
+</code></pre>
+
+<p>设置完之后，其它代码基本上就不需要改动了，缓存系统已经在后台运行。</p>
+
+<p>当前实现了内存存储的 CacheStore 接口 MemoryStore，如果需要采用其它设备存储，可以实现 CacheStore 接口。</p>
+
+<p>不过需要特别注意不适用缓存或者需要手动编码的地方：</p>
+
+<ul>
+<li><p>当使用了 <code>Distinct</code>,<code>Having</code>,<code>GroupBy</code> 方法将不会使用缓存</p></li>
+
+<li><p>在 <code>Get</code> 或者 <code>Find</code> 时使用了 <code>Cols</code>,<code>Omit</code> 方法，则在开启缓存后此方法无效，系统仍旧会取出这个表中的所有字段。</p></li>
+
+<li><p>在使用 Exec 方法执行了方法之后，可能会导致缓存与数据库不一致的地方。因此如果启用缓存，尽量避免使用 Exec。如果必须使用，则需要在使用了 Exec 之后调用 ClearCache 手动做缓存清除的工作。比如：</p>
+<pre><code>engine.Exec(&quot;update user set name = ? where id = ?&quot;, &quot;xlw&quot;, 1)
+engine.ClearCache(new(User))
+</code></pre></li>
+</ul>
+
+<h2>第六种武器：乐观锁</h2>
+
+<p>很多从事金融软件的朋友都会关注这个问题，乐观锁普遍的在 Java，.Net的ORM框架中被实现。使用如下：</p>
+
+<p>要使用乐观锁，需要使用 version 标记</p>
+<pre><code>type User struct {
+    Id int64
+    Name string
+    Version int `xorm:&quot;version&quot;`
+}
+</code></pre>
+
+<p>在 Insert 时，version 标记的字段将会被设置为 1，在 Update 时，Update 的内容必须包含 version 原来的值。</p>
+<pre><code>var user User
+engine.Id(1).Get(&amp;user)
+// SELECT * FROM user WHERE id = ?
+engine.Id(1).Update(&amp;user)
+// UPDATE user SET ..., version = version + 1 WHERE id = ? AND version = ?
+</code></pre>
+
+<h2>第七种武器：数据库反转</h2>
+
+<p>现在是不是有点冲动想开始用<a href="https://github.com/lunny/xorm"> xorm</a> 来管理你的数据库了呢？可以已有数据库怎么处理呢？要重写很多代码吗？</p>
+
+<p>还在羡慕 Java 的 Hibernate 可以通过数据库自动生成 Bean 和 DAO 代码吗？现在 Go 也有了，而且支持生成 c++ 代码，欢呼吧。</p>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 自带了一个命令行工具，当前提供了反转命令。通过执行</p>
+<pre><code>go install github.com/lunny/xorm/xorm
+</code></pre>
+
+<p>即可安装该工具。安装完成后，我们就可以来使用 <code>xorm</code> 这个命令了。<a href="https://github.com/lunny/xorm">xorm</a> 的反转命令当前支持 sqlite3,mysql,postgres 以及 mssql 四种数据库。命令执行如下：</p>
+<pre><code>xorm reverse sqite3 test.db templates/goxorm
+</code></pre>
+
+<p>其中，第二和第三个参数为数据库驱动的连接参数，最后一个参数为模板路径。对的，你可以在这个模板的基础上进行修改，最后也许你的大部分 models 代码都可以自动生成。我的一个同事已经通过这个工具，生成了一个 Mysql 数据库的 C++ 操作代码。</p>
+
+<h2>最后</h2>
+
+<p><a href="https://github.com/lunny/xorm">xorm</a> 项目已经发展了半年多，目前我们已经有两位长期的贡献者，很多同学也给出了各种方面的建议和修正。目前 <a href="https://github.com/lunny/xorm">xorm</a> 还在不断的成长，欢迎大家多提意见建议贡献代码。</p>
+</section>
+                </div>
+            </article>
+        </div>
+        
+<section id="comment">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            
+            <div id="disqus_thread"></div>
+            <script>
+                var disqus_config = function () {
+                    this.page.url = "http:\/\/localhost\/2014\/1\/1\/1-7-weapons"; 
+                };
+                (function () {
+                    var d = document, s = d.createElement('script');
+                    s.src = '//xorm.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+                powered by Disqus.</a></noscript>
+            
+        </div>
+    </div>
+</section>
+
+        <footer id="footer">
+    <div class="container text-center">
+        <p class="left">© 2015 XORM.
+            <a href="http://creativecommons.org/licenses/by/3.0/">Some rights reserved </a> |
+            <a href="/feed.xml">Feed</a> |
+            <a href="/sitemap.xml">Sitemap</a>
+        </p>
+        <p class="right">Powered by <a href="https://github.com/go-xiaohei/pugo">PuGo 0.9.0.0101</a>. Theme by Uno.
+        </p>
+    </div>
+</footer>
+    </div>
+</section>
+<script src="/static/js/prism.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("pre code").addClass("line-numbers")
+    });
+</script>
+</body>
+</html>

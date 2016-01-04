@@ -62,34 +62,83 @@
 
 <h1>SnakeMapper</h1>
 
-<p>SnakeMapper是默认的映射机制，他支持数据库表采用匈牙利命名法，而程序中采用驼峰式命名法。下面是一些常见的映射：
-|----------|----------|
-|表中名称   | 程序名称   |
-|----------|----------|
-|user_info | UserInfo |
-|id        | Id       |
-|----------|----------|</p>
+<p>SnakeMapper是默认的映射机制，他支持数据库表采用匈牙利命名法，而程序中采用驼峰式命名法。下面是一些常见的映射：</p>
+
+<table>
+<thead>
+<tr>
+<th>表中名称</th>
+<th>程序名称</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>user_info</td>
+<td>UserInfo</td>
+</tr>
+
+<tr>
+<td>id</td>
+<td>Id</td>
+</tr>
+</tbody>
+</table>
 
 <h1>SameMapper</h1>
 
-<p>SameMapper就是数据库中的命名法和程序中是相同的。那么鉴于在Go中，基本上要求首字母必须大写。所以一般都是表中和程序中均采用驼峰式命名。下面是一些常见的映射：
-|----------|----------|
-|表中名称   | 程序名称   |
-|----------|----------|
-|UserInfo  | UserInfo |
-|Id        | Id       |
-|----------|----------|</p>
+<p>SameMapper就是数据库中的命名法和程序中是相同的。那么鉴于在Go中，基本上要求首字母必须大写。所以一般都是表中和程序中均采用驼峰式命名。下面是一些常见的映射：</p>
+
+<table>
+<thead>
+<tr>
+<th>表中名称</th>
+<th>程序名称</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>UserInfo</td>
+<td>UserInfo</td>
+</tr>
+
+<tr>
+<td>Id</td>
+<td>Id</td>
+</tr>
+</tbody>
+</table>
 
 <h1>GonicMapper</h1>
 
-<p>GonicMapper是在SnakeMapper的基础上增加了特例，对于常见的缩写不新增下划线处理。这个同时也符合golint的规则。下面是一些常见的映射：
-|----------|----------|
-|表中名称   | 程序名称   |
-|----------|----------|
-|user_info | UserInfo |
-|id        | ID       |
-|url        | URL     |
-|----------|----------|</p>
+<p>GonicMapper是在SnakeMapper的基础上增加了特例，对于常见的缩写不新增下划线处理。这个同时也符合golint的规则。下面是一些常见的映射：</p>
+
+<table>
+<thead>
+<tr>
+<th>表中名称</th>
+<th>程序名称</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>user_info</td>
+<td>UserInfo</td>
+</tr>
+
+<tr>
+<td>id</td>
+<td>ID</td>
+</tr>
+
+<tr>
+<td>url</td>
+<td>URL</td>
+</tr>
+</tbody>
+</table>
 
 <h1>CacheMapper</h1>
 

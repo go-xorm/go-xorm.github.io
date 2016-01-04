@@ -55,6 +55,103 @@
                 <div class="row">
                     <header class="header">
                         <h3 class="title">
+                            <a href="/2016/1/4/1-about-mapper.html">关于XORM中Mapper的使用</a>
+                        </h3>
+                    </header>
+                    <section class="brief"><p>XORM中的Mapper是一个接口机制，专门用来在程序名称和数据库名称之间进行转换。XORM库中带有三种Mapper的实现，SnakeMapper, SameMapper 以及 GonicMapper。同时为了方便还提供了CacheMapper, PrefixMapper 以及 SuffixMapper，这几种Mapper可以和前面的组合使用。</p>
+
+<h1>SnakeMapper</h1>
+
+<p>SnakeMapper是默认的映射机制，他支持数据库表采用匈牙利命名法，而程序中采用驼峰式命名法。下面是一些常见的映射：
+|----------|----------|
+|表中名称   | 程序名称   |
+|----------|----------|
+|user_info | UserInfo |
+|id        | Id       |
+|----------|----------|</p>
+
+<h1>SameMapper</h1>
+
+<p>SameMapper就是数据库中的命名法和程序中是相同的。那么鉴于在Go中，基本上要求首字母必须大写。所以一般都是表中和程序中均采用驼峰式命名。下面是一些常见的映射：
+|----------|----------|
+|表中名称   | 程序名称   |
+|----------|----------|
+|UserInfo  | UserInfo |
+|Id        | Id       |
+|----------|----------|</p>
+
+<h1>GonicMapper</h1>
+
+<p>GonicMapper是在SnakeMapper的基础上增加了特例，对于常见的缩写不新增下划线处理。这个同时也符合golint的规则。下面是一些常见的映射：
+|----------|----------|
+|表中名称   | 程序名称   |
+|----------|----------|
+|user_info | UserInfo |
+|id        | ID       |
+|url        | URL     |
+|----------|----------|</p>
+
+<h1>CacheMapper</h1>
+
+<p>CacheMapper 通过使用一个map来将已经映射过的内容保存起来，下次直接查找即可获得。</p>
+
+<h1>PrefixMapper</h1>
+
+<p>PrefixMapper 前缀映射可以组合SnakeMapper, SameMapper或者GonicMapper来在表名或者字段名的映射完成后，再新增一个固定的前缀。比如和SnakeMapper组合：</p>
+<pre><code class="language-Go">engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, &quot;tb_&quot;))
+engine.SetColumnMapper(core.SnakeMapper{})
+</code></pre>
+
+<p>那么对于结构体<code>User</code>，数据库中对应的表名即为<code>tb_user</code>，而表中字段名比如<code>id</code>对应的程序中结构体字段名仍为<code>Id</code>。</p>
+
+<h1>SuffixMapper</h1>
+
+<p>SuffixMapper 后缀映射类似与前缀映射，也可以组合SnakeMapper, SameMapper或者GonicMapper来在表名或者字段名的映射完成后，再新增一个固定的前缀。比如和SnakeMapper组合：</p>
+<pre><code class="language-Go">engine.SetTableMapper(core.NewSuffixMapper(core.SnakeMapper{}, &quot;_table&quot;))
+engine.SetColumnMapper(core.SnakeMapper{})
+</code></pre>
+
+<p>那么对于结构体<code>User</code>，数据库中对应的表名即为<code>user_table</code>，而表中字段名比如<code>id</code>对应的程序中结构体字段名仍为<code>Id</code>。</p>
+
+<h1>表名和字段名分别映射</h1>
+
+<p>在前面的例子中也看到了，这种映射可以对表名和字段名采用相同的映射，也可以表名和字段名采用不同的映射方案。</p>
+
+<ul>
+<li><p>表名和字段名使用相同映射方案</p>
+<pre><code class="language-Go">engine.SetMapper(mapper)
+</code></pre></li>
+
+<li><p>表名和字段名使用不同的映射方案</p>
+<pre><code class="language-Go">engine.SetTableMapper(mapper1)
+engine.SetColumnMapper(mapper2)
+</code></pre></li>
+</ul>
+
+<p>最后，关于名称映射更多的方法可以参考XORM文档 <a href="http://gobook.io/read/go-xorm/manual-zh-cn/chapter-02/3.tags.html">使用Table和Tag改变名称映射</a></p>
+</section>
+                    <aside class="aside clearfix">
+                        <span class="date">
+                            <span class="year">2016</span>/
+                            <span class="month">1</span>/
+                            <span class="day">4</span>
+                        </span>
+                        <span class="tags">
+                            <a class="tag" href="/tags/go.html">go</a>
+                            <a class="tag" href="/tags/golang.html">golang</a>
+                            <a class="tag" href="/tags/xorm.html">xorm</a>
+                            <a class="tag" href="/tags/orm.html">orm</a>
+                            <a class="tag" href="/tags/sql.html">sql</a>
+                            <a class="tag" href="/tags/database.html">database</a>
+                        </span>
+                        <a class="btn btn-primary btn-lg pull-right" href="/2016/1/4/1-about-mapper.html">继续阅读</a>
+                    </aside>
+                </div>
+            </article>
+            <article class="article">
+                <div class="row">
+                    <header class="header">
+                        <h3 class="title">
                             <a href="/2015/12/1/1-xorm-join-extends-usage.html">在Xorm中使用Join和Extends标记</a>
                         </h3>
                     </header>
